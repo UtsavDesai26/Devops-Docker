@@ -7,7 +7,8 @@ services:
             - "4200:4200"
         container_name: client
         depends_on:
-            [api, webapi]
+          - api
+          - webapi
 
     api:
         build:
@@ -16,7 +17,8 @@ services:
             - "5000:5000"
         container_name: api
         depends_on:
-            [emongo, nginx]
+          - emongo
+          - nginx
 
     webapi:
         build:
@@ -26,7 +28,7 @@ services:
         restart: always
         container_name: webapi
         depends_on:
-            [emartdb]
+          - emartdb
 
     nginx:
         restart: always
@@ -38,7 +40,7 @@ services:
             - "80:3000"
         command: ['nginx-debug', '-g', 'daemon off;']
         depends_on:
-            [client]
+          - client
 
     emongo:
        image: mongo:4
@@ -47,6 +49,7 @@ services:
          - MONGO_INITDB_DATABASE=epoc
        ports:
          - "27017:27017"
+    
     emartdb:
       image: mysql:5.7
       container_name: emartdb
